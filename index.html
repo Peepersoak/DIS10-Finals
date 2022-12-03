@@ -6,124 +6,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>The Great Escape</title>
 
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap");
-
-      body {
-        background: #0c0b0b;
-        height: 100vh;
-        width: 100vw;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-      }
-      canvas {
-        max-width: 90vw;
-        transition: all 0.2s;
-      }
-
-      .shake {
-        animation: shake 2s;
-      }
-
-      .mainWrapper {
-        position: relative;
-      }
-      .titleMenu {
-        position: absolute;
-        z-index: 100;
-        top: 70%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        transition: all 1s;
-        text-align: center;
-      }
-
-      .titleMenu h1 {
-        font-family: "Berkshire Swash", cursive;
-        font-size: 80px;
-        color: white;
-        margin-bottom: 10px;
-      }
-
-      .titleMenu h3 {
-        color: white;
-        transition: scale 0.5s;
-      }
-
-      .titleMenu h3:hover {
-        cursor: pointer;
-        scale: 1.12;
-      }
-
-      @keyframes shake {
-        0% {
-          transform: translateX(0);
-        }
-        20%,
-        40%,
-        60%,
-        80% {
-          transform: translateX(-10px);
-        }
-
-        10%,
-        30%,
-        50%,
-        90% {
-          transform: translateX(5px);
-        }
-
-        70%,
-        100% {
-          transform: translateX(0);
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <div class="mainWrapper">
-      <div class="titleMenu">
-        <h1>Dungeon Mystery</h1>
-        <h3 id="playBtn">Click To Play</h3>
+    <div class="gameWrapper">
+      <div class="openingMessage">
+        <p class="textPlaceHolder" id="textPlaceHolder">
+          Max: Where am I? What is this place?
+        </p>
       </div>
+
+      <div class="questionWrapper">
+        <div class="questionContainer" id="questionContainer"></div>
+      </div>
+
+      <div class="titleWrapper">
+        <div class="titleDescription">
+          <h1>Dungeon Mystery</h1>
+          <h3 id="playBtn">Click To Play</h3>
+        </div>
+      </div>
+
       <canvas></canvas>
     </div>
-
-    <script>
-      const canvas = document.querySelector("canvas");
-      const playBtn = document.querySelector("#playBtn");
-
-      const quakeSound = new Audio("./sounds/quake.mp3");
-      const ambientSound = new Audio("./sounds/ambient.mp3");
-
-      let isPlaying = false;
-
-      playBtn.addEventListener("click", () => {
-        isPlaying = true;
-        const wrapper = document.querySelector(".titleMenu");
-        wrapper.style.opacity = 0;
-        ambientSound.play();
-        ambientSound.loop = true;
-        setTimeout(() => {
-          wrapper.remove();
-        }, 1000);
-      });
-
-      setInterval(() => {
-        if (!isPlaying) return;
-        const random = Math.random() * 100 + 1;
-        if (random <= 10) {
-          if (canvas.classList.contains("shake")) {
-            canvas.classList.remove("shake");
-          } else {
-            canvas.classList.add("shake");
-            quakeSound.play();
-          }
-        }
-      }, 3000);
-    </script>
+    <script src="./state.js"></script>
     <script src="./scripts.js" type="module"></script>
   </body>
 </html>
