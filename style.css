@@ -1,6 +1,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap");
 
+body,
+html {
+  padding: 0;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 :root {
   --size: 650px;
 }
@@ -80,6 +90,11 @@ canvas {
   display: flex;
   align-items: center;
   justify-content: center;
+
+  width: 100%;
+  background: rgb(0 0 0 / 61%);
+
+  transition: all 1s;
 }
 
 .openingMessage {
@@ -98,11 +113,17 @@ canvas {
   transition: opacity 0.5s;
 }
 
-.questionWrapper {
+.questionWrapper,
+.consoleWrapper {
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
+}
+
+.questionContainer {
+  width: 500px;
+  max-width: 90vw;
 }
 
 .questionContainer > * {
@@ -113,7 +134,7 @@ canvas {
 
 .questionContainer button {
   font-family: "Source Sans Pro";
-  font-weight: 400;
+  font-weight: 600;
   padding: 10px 20px;
   border: none;
   border-radius: 10px;
@@ -122,6 +143,75 @@ canvas {
 
 .questionContainer button:hover {
   cursor: pointer;
+}
+
+.consoleWrapper {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: none;
+  opacity: 0;
+
+  transition: all 0.5s;
+}
+
+.consoleContainer {
+  text-align: center;
+  background-image: url("./assets/rust.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 15px 50px;
+  border-radius: 10px;
+  width: 300px;
+  max-width: 90vw;
+  box-shadow: 0px 0px 15px black;
+}
+
+.consoleContainer .consoleBtnWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.consoleContainer .consoleBtn {
+  border: none;
+  padding: 10px 30px;
+  border-radius: 10px;
+  width: 100%;
+}
+
+.consoleContainer .consoleBtn.primary {
+  background-color: rgb(32, 154, 48);
+  color: white;
+}
+
+.consoleContainer .consoleBtn.secondary {
+  background-color: red;
+  color: white;
+}
+
+.consoleContainer .consoleBtn:hover {
+  cursor: pointer;
+  filter: brightness(80%);
+}
+
+.consoleContainer h3 {
+  margin-top: 0;
+}
+
+.consoleContainer input {
+  width: 100%;
+  padding: 15px;
+  margin: 0;
+  border: none;
+  margin-bottom: 10px;
+  font-size: 1rem;
+
+  background: #2c2c2c;
+  color: white;
+  outline: none;
+  border-radius: 10px;
 }
 
 @keyframes shake {

@@ -20,6 +20,22 @@
         <div class="questionContainer" id="questionContainer"></div>
       </div>
 
+      <div class="consoleWrapper" id="consoleWrapper">
+        <div class="consoleContainer" id="consoleContainer">
+          <h3 id="consoleQuestion">Enter the Passcode</h3>
+          <p>Format:</p>
+          <p>{element #1, element #2,...}</p>
+          <input type="text" id="consoleAnswer" />
+          <div class="consoleBtnWrapper">
+            <button class="consoleBtn secondary" id="consoleCancel">
+              Cancel
+            </button>
+            <button class="consoleBtn primary" id="consoleEnter">Enter</button>
+          </div>
+          <p id="consoleResult">Checking...</p>
+        </div>
+      </div>
+
       <div class="titleWrapper">
         <div class="titleDescription">
           <h1>Dungeon Mystery</h1>
@@ -29,7 +45,7 @@
 
       <canvas></canvas>
     </div>
-    <script src="./state.js"></script>
+    <script src="./state.js" type="module"></script>
     <script src="./scripts.js" type="module"></script>
   </body>
 </html>
