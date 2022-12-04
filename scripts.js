@@ -1,3 +1,10 @@
+window.addEventListener("load", () => {
+  const loadingWrapper = document.querySelector(".loading");
+  const gameWrapper = document.querySelector(".gameWrapper");
+  loadingWrapper.style.display = "none";
+  gameWrapper.style.display = "grid";
+});
+
 import collision from "./collisionData.js";
 const collisionMap = [];
 for (let i = 0; i < collision.length; i += 50) {
@@ -25,18 +32,18 @@ const scrollImg = requestImage("./assets/scroll.png");
 const consoleImg = requestImage("./assets/console.png");
 const gateImage = requestImage("./assets/gate.png");
 const gateOpen = requestImage("./assets/gateopen.png");
-
-const scrollOpenSound = new Audio("./sounds/scrollopen.mp3");
-const walkAudio = new Audio("./sounds/footstep.mp3");
-const endingAudio = new Audio("./sounds/ending.mp3");
-walkAudio.loop = true;
-endingAudio.loop = true;
-
 function requestImage(source) {
   const image = new Image();
   image.src = source;
   return image;
 }
+
+const scrollOpenSound = new Audio("./sounds/scrollopen.mp3");
+const walkAudio = new Audio("./sounds/footstep.mp3");
+const endingAudio = new Audio("./sounds/ending.mp3");
+
+walkAudio.loop = true;
+endingAudio.loop = true;
 
 const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
@@ -390,13 +397,6 @@ const collisionDetection = ({ player, obstacle }) => {
   }
 
   return false;
-
-  // return (
-  //   player.position.x + player.width >= obstacle.position.x &&
-  //   player.position.x <= obstacle.position.x + obstacle.width &&
-  //   player.position.y <= obstacle.position.y + obstacle.height &&
-  //   player.position.y + player.height >= obstacle.position.y
-  // );
 };
 
 const move = [

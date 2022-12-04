@@ -67,6 +67,14 @@ canvas {
   display: grid;
   justify-items: center;
   grid-template-columns: minmax(0, 650px);
+  display: none;
+}
+
+.loading {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .gameWrapper > * {
