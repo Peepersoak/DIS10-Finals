@@ -17,7 +17,7 @@ let randomQuestionSet = {};
 const randomIndex = Math.floor(Math.random() * questionSet.length);
 randomQuestionSet = questionSet[randomIndex];
 
-import { doneIntro } from "./state.js";
+import { doneIntro, isPlaying, changePlayingStatus, endGame } from "./state.js";
 
 const baseMapImg = requestImage("./assets/BaseMap.png");
 const playerImg = requestImage("./assets/player.png");
@@ -28,7 +28,9 @@ const gateOpen = requestImage("./assets/gateopen.png");
 
 const scrollOpenSound = new Audio("./sounds/scrollopen.mp3");
 const walkAudio = new Audio("./sounds/footstep.mp3");
+const endingAudio = new Audio("./sounds/ending.mp3");
 walkAudio.loop = true;
+endingAudio.loop = true;
 
 function requestImage(source) {
   const image = new Image();
@@ -247,6 +249,19 @@ class Gate {
     openConsole();
   }
 }
+class ExitTile {
+  constructor({ position }) {
+    this.position = position;
+
+    this.width = 80;
+    this.height = 80;
+  }
+
+  draw() {
+    c.fillStyle = "pink";
+    c.fillRect(this.position.x, this.position.y, this.width, this.height);
+  }
+}
 
 const offset = {
   x: -100,
@@ -257,6 +272,7 @@ const baseMap = new BaseMap({ position: offset });
 
 let consoleTile = "";
 let gateTile = "";
+let exitTile = "";
 
 // Creation of boundaries
 const boundaries = [];
@@ -298,6 +314,14 @@ collisionMap.forEach((row, i) => {
         },
         frame: { max: 1 },
         image: gateImage,
+      });
+    }
+    if (symbol == 892) {
+      exitTile = new ExitTile({
+        position: {
+          x: j * Boundary.width + offset.x,
+          y: i * Boundary.height + offset.y,
+        },
       });
     }
   });
@@ -375,14 +399,16 @@ const collisionDetection = ({ player, obstacle }) => {
   // );
 };
 
-const move = [baseMap, ...boundaries, ...scrollList, consoleTile, gateTile];
+const move = [
+  baseMap,
+  ...boundaries,
+  ...scrollList,
+  consoleTile,
+  gateTile,
+  exitTile,
+];
 
-let isPlaying = false;
 let isPause = false;
-const playBtn = document.querySelector("#playBtn");
-playBtn.addEventListener("click", () => {
-  isPlaying = true;
-});
 
 const speed = 3;
 function animate() {
@@ -443,6 +469,13 @@ function animate() {
         return;
       }
     }
+    if (collisionDetection({ player, obstacle: exitTile })) {
+      isPause = true;
+      changePlayingStatus(false);
+      moving = false;
+      playEnding();
+      return;
+    }
 
     if (moving) {
       walkAudio.play();
@@ -483,6 +516,14 @@ function animate() {
 
     if (collisionDetection({ player, obstacle: consoleTile })) {
       consoleTile.openConsole();
+    }
+
+    if (collisionDetection({ player, obstacle: exitTile })) {
+      isPause = true;
+      changePlayingStatus(false);
+      moving = false;
+      playEnding();
+      return;
     }
 
     if (moving) {
@@ -526,6 +567,14 @@ function animate() {
       consoleTile.openConsole();
     }
 
+    if (collisionDetection({ player, obstacle: exitTile })) {
+      isPause = true;
+      changePlayingStatus(false);
+      moving = false;
+      playEnding();
+      return;
+    }
+
     if (moving) {
       walkAudio.play();
       move.forEach((m) => {
@@ -565,6 +614,14 @@ function animate() {
 
     if (collisionDetection({ player, obstacle: consoleTile })) {
       consoleTile.openConsole();
+    }
+
+    if (collisionDetection({ player, obstacle: exitTile })) {
+      isPause = true;
+      changePlayingStatus(false);
+      moving = false;
+      playEnding();
+      return;
     }
 
     if (moving) {
@@ -633,7 +690,6 @@ function openScroll(question, questionObject) {
 
   questionObject.isVisible = true;
 }
-
 let consoleLastOpen = 0;
 function openConsole() {
   if (consoleLastOpen > Date.now() || gateTile.isPassable) return;
@@ -750,4 +806,13 @@ function checkAnswer(playerAnswer = "", questionAnswer = "") {
 
   if (matchedCount == finalQArray.length) return true;
   return false;
+}
+function playEnding() {
+  endingAudio.play();
+  const endingWrapper = document.querySelector("#endingwrapper");
+  endingWrapper.style.display = "flex";
+  endGame();
+  setTimeout(() => {
+    endingWrapper.style.opacity = 1;
+  }, 100);
 }

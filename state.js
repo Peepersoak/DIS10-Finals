@@ -2,7 +2,7 @@ const canvas = document.querySelector("canvas");
 const playBtn = document.querySelector("#playBtn");
 
 const quakeSound = new Audio("./sounds/quake.mp3");
-const ambientSound = new Audio("./sounds/ambient.mp3");
+const ambientSound = new Audio("./sounds/newAmbient.mp3");
 
 const shakeObject = [
   {
@@ -27,9 +27,9 @@ const shakeObject = [
   },
 ];
 
-let isPlaying = false;
+export let isPlaying = false;
 export let doneIntro = false;
-
+let showing = true;
 // Play state function
 playBtn.addEventListener("click", () => {
   isPlaying = true;
@@ -49,7 +49,7 @@ playBtn.addEventListener("click", () => {
 
 // Earthquake Generator
 setInterval(() => {
-  if (!isPlaying || !doneIntro) return;
+  if (!isPlaying || !doneIntro || showing) return;
   const random = Math.random() * 100 + 1;
   if (random <= 10) {
     if (canvas.classList.contains("shake")) {
@@ -86,6 +86,7 @@ function sendText(delay, messages = []) {
       textHolder.textContent = "Press W, A, S, D to move";
       setTimeout(() => {
         textHolder.style.opacity = 0;
+        showing = false;
       }, 5000);
 
       return;
@@ -109,9 +110,8 @@ function sendRandomText() {
   }, obs.delay);
 }
 
-let showing = true;
 window.addEventListener("keydown", (e) => {
-  if (!showing) return;
+  if (!showing || !doneIntro) return;
   switch (e.key) {
     case "w":
     case "a":
@@ -122,3 +122,11 @@ window.addEventListener("keydown", (e) => {
       break;
   }
 });
+
+export function changePlayingStatus(status) {
+  isPlaying = status;
+}
+export function endGame() {
+  ambientSound.pause();
+  isPlaying = false;
+}

@@ -4,7 +4,7 @@ const questionSet = [
       question:
         "In order to get pass this gate you must remember all of the sets you have made or formed. Find the Universal of all of the question sets",
       answer:
-        "{Rocks, Cobalt, Diamond, Gold, Iron, Wood, Nails, Confidence, Perseverance, Love, Depression, Despair, Hate, Death, Mind, Strength}",
+        "{Rocks, Cobalt, Diamond, Gold, Iron, Wood, Nails, Hope, Confidence, Perseverance, Love, Depression, Despair, Hate, Death, Mind, Strength}",
     },
     questionList: [
       {
