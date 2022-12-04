@@ -45,6 +45,17 @@ canvas {
   width: 100%;
 }
 
+.temp {
+  width: 0;
+  height: 0;
+}
+.rustTemp {
+  background-image: url("./assets/rust.jpg");
+}
+.scrollTemp {
+  background-image: url("./assets/clue.jpg");
+}
+
 .shake {
   animation: shake 2s;
 }
