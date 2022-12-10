@@ -41,9 +41,13 @@ function requestImage(source) {
 const scrollOpenSound = new Audio("./sounds/scrollopen.mp3");
 const walkAudio = new Audio("./sounds/footstep.mp3");
 const endingAudio = new Audio("./sounds/ending.mp3");
+const beepAudio = new Audio("./sounds/beep.mp3");
+const gateAudio = new Audio("./sounds/gate.mp3");
+const gameoverAudio = new Audio("./sounds/gameover.mp3");
 
 walkAudio.loop = true;
 endingAudio.loop = true;
+gameoverAudio.loop = true;
 
 const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
@@ -100,7 +104,7 @@ class Player {
     //   2 * Math.PI,
     //   false
     // );
-    // c.fillStyle = "red";
+    // c.fillStyle = "pink";
     // c.fill();
     c.drawImage(
       this.image,
@@ -113,6 +117,9 @@ class Player {
       this.image.width / this.frame.max,
       this.image.height / this.frame.max
     );
+
+    // c.fillStyle = "pink";
+    // c.fillRect(this.position.x, this.position.y, this.width, this.height);
 
     if (!this.walking) return;
 
@@ -269,12 +276,10 @@ class ExitTile {
     c.fillRect(this.position.x, this.position.y, this.width, this.height);
   }
 }
-
 const offset = {
   x: -100,
   y: -500,
 };
-
 const baseMap = new BaseMap({ position: offset });
 
 let consoleTile = "";
@@ -690,12 +695,16 @@ function openScroll(question, questionObject) {
 
   questionObject.isVisible = true;
 }
+let triesLeft = 3;
 let consoleLastOpen = 0;
 function openConsole() {
   if (consoleLastOpen > Date.now() || gateTile.isPassable) return;
+  beepAudio.currentTime = 0;
+  beepAudio.play();
   isPause = true;
   consoleTile.isVisible = true;
   const consoleContainer = document.querySelector("#consoleWrapper");
+  const gameOverWrapper = document.querySelector("#gameOverWrapper");
   const question = document.querySelector("#consoleQuestion");
   const answer = document.querySelector("#consoleAnswer");
   const cancelBtn = document.querySelector("#consoleCancel");
@@ -713,9 +722,22 @@ function openConsole() {
   enterBtn.addEventListener("click", () => {
     if (checkAnswer(answer.value, randomQuestionSet.finalQuestion.answer)) {
       gateTile.isPassable = true;
+      gateAudio.play();
       closeConsole();
     } else {
-      result.textContent = "Wrong Passwrod";
+      triesLeft--;
+      result.textContent = `Wrong Passwrod: ${triesLeft} ${
+        triesLeft > 1 ? "chances" : "chance"
+      } left`;
+      if (triesLeft <= 0) {
+        gameoverAudio.play();
+        closeConsole();
+        endGame();
+        gameOverWrapper.style.display = "flex";
+        setTimeout(() => {
+          gameOverWrapper.style.opacity = 1;
+        }, 10);
+      }
     }
   });
 

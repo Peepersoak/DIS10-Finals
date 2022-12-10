@@ -134,7 +134,8 @@ canvas {
 
 .questionWrapper,
 .consoleWrapper,
-.endingWrapper {
+.endingWrapper,
+.gameOverWrapper {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -250,6 +251,14 @@ canvas {
 }
 .endingContainer h1 {
   margin-top: 0;
+}
+
+.gameOverWrapper {
+  width: 100%;
+  background-color: black;
+  transition: all 0.5s;
+  opacity: 0;
+  display: none;
 }
 
 @keyframes shake {
