@@ -23,6 +23,7 @@ import questionSet from "./questionSet/questionSet.js";
 let randomQuestionSet = {};
 const randomIndex = Math.floor(Math.random() * questionSet.length);
 randomQuestionSet = questionSet[randomIndex];
+console.log(randomIndex);
 
 import { doneIntro, isPlaying, changePlayingStatus, endGame } from "./state.js";
 

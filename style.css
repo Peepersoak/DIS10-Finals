@@ -236,8 +236,12 @@ canvas {
 }
 
 .endingWrapper {
+  background-image: url("./assets/EndGame.gif");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+
   width: 100%;
-  background: black;
   opacity: 0;
   transition: all 2s;
   display: none;
@@ -245,6 +249,10 @@ canvas {
 
 .endingContainer {
   text-align: center;
+  background: #2c72ad8a;
+  padding: 30px;
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
 }
 .endingContainer p.thankyouMessage {
   margin-bottom: 0;
