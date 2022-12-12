@@ -269,7 +269,10 @@ canvas {
 
 .gameOverWrapper {
   width: 100%;
-  background-color: black;
+  background-image: url("./assets/gameover.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   transition: all 0.5s;
   opacity: 0;
   display: none;
