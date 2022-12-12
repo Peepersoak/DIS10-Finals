@@ -103,15 +103,21 @@ canvas {
 
 .titleDescription {
   transition: all 1s;
+  position: absolute;
+  bottom: 23%;
 }
 
 .titleWrapper {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
 
   width: 100%;
-  background: rgb(0 0 0 / 61%);
+  background-image: url("./assets/mainmenu.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 
   transition: all 1s;
 }
