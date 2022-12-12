@@ -698,20 +698,57 @@ function openScroll(question, questionObject) {
 }
 let triesLeft = 3;
 let consoleLastOpen = 0;
+
+const consoleContainer = document.querySelector("#consoleWrapper");
+const gameOverWrapper = document.querySelector("#gameOverWrapper");
+const question = document.querySelector("#consoleQuestion");
+const answer = document.querySelector("#consoleAnswer");
+const cancelBtn = document.querySelector("#consoleCancel");
+const enterBtn = document.querySelector("#consoleEnter");
+const result = document.querySelector("#consoleResult");
+
+enterBtn.addEventListener("click", () => {
+  if (checkAnswer(answer.value, randomQuestionSet.finalQuestion.answer)) {
+    gateTile.isPassable = true;
+    gateAudio.play();
+    closeConsole();
+  } else {
+    if (triesLeft <= 0) return;
+    triesLeft--;
+    result.textContent = `Wrong Passwrod: ${triesLeft} ${
+      triesLeft > 1 ? "chances" : "chance"
+    } left`;
+    if (triesLeft <= 0) {
+      gameoverAudio.play();
+      closeConsole();
+      endGame();
+      gameOverWrapper.style.display = "flex";
+      setTimeout(() => {
+        gameOverWrapper.style.opacity = 1;
+      }, 10);
+    }
+  }
+});
+
+cancelBtn.addEventListener("click", () => closeConsole());
+
+function closeConsole() {
+  consoleContainer.style.opacity = 0;
+  isPause = false;
+  setTimeout(() => {
+    consoleContainer.style.display = "none";
+    lastOpen = Date.now() + 2000;
+    consoleTile.isVisible = false;
+  }, 1000);
+}
+
 function openConsole() {
-  if (consoleLastOpen > Date.now() || gateTile.isPassable) return;
+  if (consoleLastOpen > Date.now() || gateTile.isPassable || triesLeft <= 0)
+    return;
   beepAudio.currentTime = 0;
   beepAudio.play();
   isPause = true;
   consoleTile.isVisible = true;
-  const consoleContainer = document.querySelector("#consoleWrapper");
-  const gameOverWrapper = document.querySelector("#gameOverWrapper");
-  const question = document.querySelector("#consoleQuestion");
-  const answer = document.querySelector("#consoleAnswer");
-  const cancelBtn = document.querySelector("#consoleCancel");
-  const enterBtn = document.querySelector("#consoleEnter");
-  const result = document.querySelector("#consoleResult");
-  result.textContent = "Checking...";
   answer.value = "";
 
   consoleContainer.style.display = "flex";
@@ -719,40 +756,6 @@ function openConsole() {
   setTimeout(() => {
     consoleContainer.style.opacity = 1;
   }, 10);
-
-  enterBtn.addEventListener("click", () => {
-    if (checkAnswer(answer.value, randomQuestionSet.finalQuestion.answer)) {
-      gateTile.isPassable = true;
-      gateAudio.play();
-      closeConsole();
-    } else {
-      triesLeft--;
-      result.textContent = `Wrong Passwrod: ${triesLeft} ${
-        triesLeft > 1 ? "chances" : "chance"
-      } left`;
-      if (triesLeft <= 0) {
-        gameoverAudio.play();
-        closeConsole();
-        endGame();
-        gameOverWrapper.style.display = "flex";
-        setTimeout(() => {
-          gameOverWrapper.style.opacity = 1;
-        }, 10);
-      }
-    }
-  });
-
-  cancelBtn.addEventListener("click", () => closeConsole());
-
-  function closeConsole() {
-    consoleContainer.style.opacity = 0;
-    isPause = false;
-    setTimeout(() => {
-      consoleContainer.style.display = "none";
-      lastOpen = Date.now() + 2000;
-      consoleTile.isVisible = false;
-    }, 1000);
-  }
 }
 let lastKey = "";
 window.addEventListener("keydown", (e) => {
